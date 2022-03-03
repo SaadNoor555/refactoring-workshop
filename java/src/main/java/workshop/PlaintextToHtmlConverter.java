@@ -5,20 +5,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PlaintextToHtmlConverter {
     /*removed some fields*/
-//    String source;
-//    int i;
-//    List<String> result;
-//    List<String> convertedLine;
-//    String characterToConvert;
+    /*
+    String source;
+    int i;
+    List<String> result;
+    List<String> convertedLine;
+    String characterToConvert;
+    */
 
     public String toHtml() throws Exception {
         String text = read();
-        String htmlLines = basicHtmlEncode(text);
-        return htmlLines;
+        return basicHtmlEncode(text);
     }
 
     private String read() throws IOException {
@@ -32,53 +34,39 @@ public class PlaintextToHtmlConverter {
         int i = 0;
         List<String>result = new ArrayList<>();
         List<String>convertedLine = new ArrayList<>();
-        String characterToConvert = stashNextCharacterAndAdvanceThePointer(source);
+//        String characterToConvert = stashNextCharacterAndAdvanceThePointer(source, i);
+        List<CharacterMatcher> characterMatchers = new ArrayList(Arrays.asList(new GreaterThanMatcher(), new LessThanMatcher(), new AndMatcher(), new NewLineMatcher()));
 
-        while (i <= source.length()) {
-            switch (characterToConvert) {
-                case "<":
-                    convertedLine.add("&lt;");
-                    break;
-                case ">":
-                    convertedLine.add("&gt;");
-                    break;
-                case "&":
-                    convertedLine.add("&amp;");
-                    break;
-                case "\n":
-                    addANewLine(result, convertedLine);
-                    break;
-                default:
-                    pushACharacterToTheOutput(convertedLine, characterToConvert);
+        for(char characterToConvert : source.toCharArray()) {
+            for(CharacterMatcher matcher : characterMatchers) {
+                if(matcher.matches(characterToConvert)){
+                    matcher.addNewCharacter(convertedLine, Character.toString(characterToConvert));
+                }
             }
-
-            if (i >= source.length()) break;
-
-            characterToConvert = stashNextCharacterAndAdvanceThePointer(source, i);
-            i+=1;
         }
-        addANewLine(result, convertedLine);
-        String finalResult = String.join("<br />", result);
-        return finalResult;
+        AddToOutput.addANewLine(result, convertedLine);
+        convertedLine.clear();
+        return AddToOutput.addBreakLineToOutput(result);
     }
+    /*
 
-    //pick the character from source string
-    //and increment the pointer
+    REMOVED BECAUSE OF PRIMITIVE OBSESSION
     private String stashNextCharacterAndAdvanceThePointer(String source, int i) {
         char c = source.charAt(i);
 //        i+=1;
         return String.valueOf(c);
     }
+    */
 
     //stringfy convertedLine array and push into result
     //reset convertedLine
+    /*
+
+    REMOVED TO SHORTEN THE CLASS
     private void addANewLine(List<String> result, List<String>convertedLine) {
         String line = String.join("", convertedLine);
         result.add(line);
         convertedLine = new ArrayList<>();
     }
-
-    private void pushACharacterToTheOutput(List<String>convertedLine, String characterToConvert) {
-        convertedLine.add(characterToConvert);
-    }
+    */
 }
