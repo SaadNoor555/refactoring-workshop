@@ -1,5 +1,6 @@
-package workshop;
+package workshop.htmlCoverter;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class PlaintextToHtmlConverter {
     /*removed some fields*/
@@ -23,26 +25,39 @@ public class PlaintextToHtmlConverter {
         return basicHtmlEncode(text);
     }
 
-    private String read() throws IOException {
-        //making more readable
-        Path filePath = Paths.get("sample.txt");
-        byte[] fileByteArray = Files.readAllBytes(filePath);
-        return new String(fileByteArray);
+    protected String read() throws IOException {
+        Scanner fileScanner = new Scanner(new File("sample.txt"));
+        String content = "";
+        while (fileScanner.hasNextLine()){
+            content+=(fileScanner.nextLine()+"\n");
+        }
+        return removeFinalEndLine(content);
+    }
+
+    private String removeFinalEndLine(String content) {
+        int end = content.length() - 1;
+        if(content.charAt(end) == '\n')
+            content = content.substring(0, end);
+        return content;
     }
 
     private String basicHtmlEncode(String source) {
-        int i = 0;
         List<String>result = new ArrayList<>();
         List<String>convertedLine = new ArrayList<>();
 //        String characterToConvert = stashNextCharacterAndAdvanceThePointer(source, i);
         List<CharacterMatcher> characterMatchers = new ArrayList(Arrays.asList(new GreaterThanMatcher(), new LessThanMatcher(), new AndMatcher(), new NewLineMatcher()));
 
         for(char characterToConvert : source.toCharArray()) {
+            boolean flag = true;
             for(CharacterMatcher matcher : characterMatchers) {
-                if(matcher.matches(characterToConvert)){
-                    matcher.addNewCharacter(convertedLine, Character.toString(characterToConvert));
+                if(matcher.matches(characterToConvert)) {
+                    matcher.addNewCharacter(convertedLine);
+                    flag = false;
+                    break;
                 }
             }
+            if(flag)
+                convertedLine.add(String.valueOf(characterToConvert));
         }
         AddToOutput.addANewLine(result, convertedLine);
         convertedLine.clear();
@@ -62,7 +77,7 @@ public class PlaintextToHtmlConverter {
     //reset convertedLine
     /*
 
-    REMOVED TO SHORTEN THE CLASS
+    REMOVED FOR SINGLE RESPONSIBILITY
     private void addANewLine(List<String> result, List<String>convertedLine) {
         String line = String.join("", convertedLine);
         result.add(line);

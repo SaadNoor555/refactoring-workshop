@@ -1,4 +1,4 @@
-package workshop;
+package workshop.htmlCoverter;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ public class NewLineMatcher implements CharacterMatcher{
     }
 
     @Override
-    public void addNewCharacter(List<String> convertedLine, String characterToConvert) {
+    public void addNewCharacter(List<String> convertedLine) {
         convertedLine.add("<br />");
-        convertedLine.clear();
+//        convertedLine.clear();
     }
 }

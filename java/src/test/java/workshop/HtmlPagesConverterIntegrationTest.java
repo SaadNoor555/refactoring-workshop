@@ -1,6 +1,7 @@
 package workshop;
 
 import org.junit.Test;
+import workshop.htmlCoverter.PlaintextToHtmlConverter;
 
 import static org.junit.Assert.assertEquals;
 

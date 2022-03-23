@@ -1,4 +1,4 @@
-package workshop;
+package workshop.htmlCoverter;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +11,7 @@ public class GreaterThanMatcher implements CharacterMatcher {
     }
 
     @Override
-    public void addNewCharacter(List<String> convertedLine, String characterToConvert) {
+    public void addNewCharacter(List<String> convertedLine) {
         convertedLine.add("&gt;");
     }
 }

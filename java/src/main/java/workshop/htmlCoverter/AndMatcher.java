@@ -1,4 +1,4 @@
-package workshop;
+package workshop.htmlCoverter;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ public class AndMatcher implements CharacterMatcher{
     }
 
     @Override
-    public void addNewCharacter(List<String> convertedLine, String characterToConvert) {
-        convertedLine.add("&amp");
+    public void addNewCharacter(List<String> convertedLine) {
+        convertedLine.add("&amp;");
     }
 }

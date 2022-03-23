@@ -1,6 +1,7 @@
 package workshop;
 
 import org.junit.Test;
+import workshop.triviaGame.TriviaGame;
 
 import java.util.ArrayList;
 import java.util.Arrays;

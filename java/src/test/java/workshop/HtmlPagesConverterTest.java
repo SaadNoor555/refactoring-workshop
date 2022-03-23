@@ -1,6 +1,7 @@
 package workshop;
 
 import org.junit.Test;
+import workshop.htmlCoverter.PlaintextToHtmlConverter;
 
 import java.io.IOException;
 
@@ -42,7 +43,7 @@ public class HtmlPagesConverterTest {
             this.text = text;
         }
 //        @Override
-        private String read() throws IOException {
+        protected String read() throws IOException {
             return text;
         }
     }

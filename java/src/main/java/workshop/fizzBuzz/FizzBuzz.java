@@ -1,6 +1,7 @@
-package workshop;
+package workshop.fizzBuzz;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,12 +13,20 @@ import java.util.List;
 public class FizzBuzz {
     private List<PatternMatcher> patternMatchers;
     private PatternMatcher nullObjectPattern;
+//    public FizzBuzz()
     public FizzBuzz(List<PatternMatcher> patternMatchers, PatternMatcher nullObjectPattern) {
-        super();
         this.patternMatchers = patternMatchers;
         this.nullObjectPattern = nullObjectPattern;
     }
-
+    public FizzBuzz(){
+        FizzPatternMatcher fizz = new FizzPatternMatcher();
+        BuzzPatternMatcher buzz = new BuzzPatternMatcher();
+        NullResponse nullResponse = new NullResponse();
+        nullObjectPattern = nullResponse;
+        patternMatchers = new ArrayList<>();
+        patternMatchers.add(fizz);
+        patternMatchers.add(buzz);
+    }
     public String say(int number) {
         String strReturn = nullObjectPattern.generateRresponse();
 

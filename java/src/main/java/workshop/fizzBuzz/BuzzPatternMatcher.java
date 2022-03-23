@@ -1,4 +1,4 @@
-package workshop;
+package workshop.fizzBuzz;
 
 public class BuzzPatternMatcher implements PatternMatcher {
     @Override

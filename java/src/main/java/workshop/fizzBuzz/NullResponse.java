@@ -1,4 +1,4 @@
-package workshop;
+package workshop.fizzBuzz;
 
 public class NullResponse implements PatternMatcher{
 
