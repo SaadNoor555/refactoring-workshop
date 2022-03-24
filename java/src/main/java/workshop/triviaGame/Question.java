@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public interface Question {
     public boolean typeOfQues(String catagory);
-    public void generateResponse();
+    public String generateResponse();
     public String categoryOfPlace(int place);
+    public void addQuestion(String qeues);
 }

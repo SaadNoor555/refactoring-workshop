@@ -3,20 +3,27 @@ package workshop.triviaGame;
 import java.util.ArrayList;
 
 public class PopQuestion implements Question{
-    ArrayList questions = new ArrayList();
+    ArrayList<String> questions = new ArrayList();
     @Override
     public boolean typeOfQues(String catagory) {
-        return catagory == "POP";
+        return catagory.equals("POP");
     }
 
     @Override
-    public void generateResponse() {
-        System.out.println(questions.remove(0));
+    public String generateResponse() {
+        String ques = questions.get(0);
+        questions.remove(0);
+        return ques;
     }
 
     @Override
     public String categoryOfPlace(int place) {
         if(place % 4 == 0) return "Pop";
         return "";
+    }
+
+    @Override
+    public void addQuestion(String question) {
+        questions.add(question);
     }
 }

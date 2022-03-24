@@ -1,31 +1,36 @@
 package workshop.triviaGame;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class TriviaGame {
     ArrayList<Player> players = new ArrayList<>();
     ArrayList<Question> questions = new ArrayList<>();
-//    ArrayList players = new ArrayList();
-//    int[] places = new int[6];
-//    int[] purses = new int[6];
-//    boolean[] inPenaltyBox = new boolean[6];
 
-    LinkedList popQuestions = new LinkedList();
-    LinkedList scienceQuestions = new LinkedList();
-    LinkedList sportsQuestions = new LinkedList();
-    LinkedList rockQuestions = new LinkedList();
+//    LinkedList popQuestions = new LinkedList();
+//    LinkedList scienceQuestions = new LinkedList();
+//    LinkedList sportsQuestions = new LinkedList();
+//    LinkedList rockQuestions = new LinkedList();
 
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
 
     public TriviaGame() {
+        PopQuestion popQuestion = new PopQuestion();
+        RockQuestion rockQuestion = new RockQuestion();
+        ScienceQuestion scienceQuestion = new ScienceQuestion();
+        SportsQuestion sportsQuestion = new SportsQuestion();
         for (int i = 0; i < 50; i++) {
-            popQuestions.addLast("Pop Question " + i);
-            scienceQuestions.addLast(("Science Question " + i));
-            sportsQuestions.addLast(("Sports Question " + i));
-            rockQuestions.addLast("Rock Question " + i);
+            popQuestion.addQuestion("Pop Question " + i);
+            scienceQuestion.addQuestion("Science Question " + i);
+            sportsQuestion.addQuestion("Sports Question " + i);
+            rockQuestion.addQuestion("Rock Question " + i);
         }
+        questions.add(popQuestion);
+        questions.add(scienceQuestion);
+        questions.add(sportsQuestion);
+        questions.add(rockQuestion);
     }
 
     public boolean isPlayable() {
@@ -35,11 +40,6 @@ public class TriviaGame {
     public boolean add(String playerName) {
 
         players.add(new Player(playerName));
-//        players.add(playerName);
-//        places[howManyPlayers()] = 0;
-//        purses[howManyPlayers()] = 0;
-//        inPenaltyBox[howManyPlayers()] = false;
-
         announce(playerName + " was added");
         announce("They are player number " + players.size());
         return true;
@@ -71,7 +71,7 @@ public class TriviaGame {
 
     private void announcePlayerLocationAndCatagory(int roll) {
         players.get(currentPlayer).move(roll);
-        announce(players.get(currentPlayer)
+        announce(players.get(currentPlayer).playerName
                 + "'s new location is "
                 + players.get(currentPlayer).places);
         announce("The category is " + currentCategory());
@@ -80,8 +80,11 @@ public class TriviaGame {
 
     private void askQuestion() {
         for(Question question : questions){
-            if(question.typeOfQues(currentCategory()))
-                question.generateResponse();
+            if(question.typeOfQues(currentCategory())){
+                System.out.println("hi");
+                announce(question.generateResponse());
+            }
+
         }
     }
 
@@ -116,7 +119,7 @@ public class TriviaGame {
     private void announceCorrectAns() {
         announce("Answer was correct!!!!");
         players.get(currentPlayer).purses++;
-        announce(players.get(currentPlayer)
+        announce(players.get(currentPlayer).playerName
                 + " now has "
                 + players.get(currentPlayer).purses
                 + " Gold Coins.");
@@ -129,17 +132,13 @@ public class TriviaGame {
 
     public boolean wrongAnswer() {
         announce("Question was incorrectly answered");
-        announce(players.get(currentPlayer) + " was sent to the penalty box");
+        announce(players.get(currentPlayer).playerName + " was sent to the penalty box");
         players.get(currentPlayer).inPenaltyBox = true;
 
         shiftTurn();
         return true;
     }
 
-/* moved to Player*/
-//    private boolean didPlayerWin() {
-//        return players.get(currentPlayer).purses != 6;
-//    }
     protected void announce(Object message) {
         System.out.println(message);
     }
